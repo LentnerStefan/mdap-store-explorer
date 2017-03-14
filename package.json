@@ -2,7 +2,7 @@
   "name": "mdap-store-explorer",
   "version": "0.1.0",
   "description": "A simple store explorer",
-  "main": "dist/app.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node scripts/babelify.js"
