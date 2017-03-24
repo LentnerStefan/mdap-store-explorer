@@ -6,7 +6,9 @@ var babelOptions = {
     "presets": [
         "focus"
     ],
-    sourceMaps: 'inline'
+    //sourceMaps: 'inline'
+    sourceMaps:false
+    // debug:true
 };
 
 var walk = function(dir) {
