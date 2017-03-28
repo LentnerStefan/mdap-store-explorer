@@ -171,6 +171,9 @@ export default React.createClass({
             displayOptions: !this.state.displayOptions
         })
     },
+    // getConfig(){
+    //     return this.refs['mdap-config'].getOptionsValues();
+    // },
 
     render() {
         return (
@@ -199,7 +202,7 @@ export default React.createClass({
                     </form>}
                 <div className='customDevToolsContent'>
                     {this.state.displayOptions ?
-                        <StoreConfig/>
+                        <StoreConfig ref='mdap-config'/>
                         :
                         this.displayCoreStoreList()}
                 </div>

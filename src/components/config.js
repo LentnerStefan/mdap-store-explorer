@@ -9,11 +9,6 @@ export default React.createClass({
 
     getInitialState() {
         return {
-            listenerCount: {
-                value: false,
-                label: 'Listener Count',
-                opt:'listenerCount'
-            },
             appStores: {
                 value: false,
                 label: 'Show App Stores',
