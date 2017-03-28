@@ -176,6 +176,11 @@ exports.default = _react2.default.createClass({
             displayOptions: !this.state.displayOptions
         });
     },
+
+    // getConfig(){
+    //     return this.refs['mdap-config'].getOptionsValues();
+    // },
+
     render: function render() {
         return _react2.default.createElement(
             'div',
@@ -216,7 +221,7 @@ exports.default = _react2.default.createClass({
             _react2.default.createElement(
                 'div',
                 { className: 'customDevToolsContent' },
-                this.state.displayOptions ? _react2.default.createElement(_config2.default, null) : this.displayCoreStoreList()
+                this.state.displayOptions ? _react2.default.createElement(_config2.default, { ref: 'mdap-config' }) : this.displayCoreStoreList()
             )
         );
     }

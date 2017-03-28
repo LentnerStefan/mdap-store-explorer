@@ -167,9 +167,10 @@ export default React.createClass({
         }
     },
     toggleOptions() {
-        this.setState({
-            displayOptions: !this.state.displayOptions
-        })
+        console.log('Wip')
+        // this.setState({
+        //     displayOptions: !this.state.displayOptions
+        // })
     },
     // getConfig(){
     //     return this.refs['mdap-config'].getOptionsValues();
@@ -184,7 +185,6 @@ export default React.createClass({
                     {this.state.isExpanded &&
                         <div>
                             <div onClick={this.toggleOptions} className="icon-gear" />
-
                             <div onClick={this.toggleSearchBar} className="searchButton" />
                         </div>
                     }

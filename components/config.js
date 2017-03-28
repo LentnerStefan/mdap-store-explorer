@@ -21,11 +21,6 @@ exports.default = _react2.default.createClass({
 
     getInitialState: function getInitialState() {
         return {
-            listenerCount: {
-                value: false,
-                label: 'Listener Count',
-                opt: 'listenerCount'
-            },
             appStores: {
                 value: false,
                 label: 'Show App Stores',
