@@ -172,9 +172,10 @@ exports.default = _react2.default.createClass({
         }
     },
     toggleOptions: function toggleOptions() {
-        this.setState({
-            displayOptions: !this.state.displayOptions
-        });
+        console.log('Wip');
+        // this.setState({
+        //     displayOptions: !this.state.displayOptions
+        // })
     },
 
     // getConfig(){
