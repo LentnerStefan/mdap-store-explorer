@@ -24,6 +24,8 @@ var _config = require('./components/config');
 
 var _config2 = _interopRequireDefault(_config);
 
+require('./styles/mdap-dev-tools.scss');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _react2.default.createClass({
