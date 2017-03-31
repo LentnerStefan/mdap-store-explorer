@@ -4,6 +4,8 @@ import lodash from 'lodash';
 import StoreLine from './components/store-line';
 import StoreConfig from './components/config';
 
+import './styles/mdap-dev-tools.scss';
+
 export default React.createClass({
     displayName: 'customDevTools',
 
