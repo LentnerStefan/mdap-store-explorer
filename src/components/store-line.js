@@ -1,11 +1,9 @@
-import React, { Component, PropTypes } from 'react';
-import CoreStore from 'focus-core/store/CoreStore'
-import lodash from 'lodash';
+import React from 'react';
 import JSONTree from 'react-json-tree';
 
 
 export default React.createClass({
-    displayName: 'customDevTools-store-line',
+    displayName: 'mdap-store-line',
 
     getInitialState() {
         return {
@@ -20,11 +18,11 @@ export default React.createClass({
     },
 
     getClassName() {
-        return this.state.isExpanded ? 'customDevTools-line-expanded' : 'customDevTools-line-collapsed';
+        return this.state.isExpanded ? 'mdap-store-line-expanded' : 'mdap-store-line-collapsed';
     },
 
     getIconClassName() {
-        return this.state.isExpanded ? 'customDevTools-button-line-expanded' : 'customDevTools-button-line-collapsed';
+        return this.state.isExpanded ? 'mdap-store-button-line-expanded' : 'mdap-store-button-line-collapsed';
     },
     getStoreStatusIcon() {
         switch (this.props.store.status) {
@@ -42,25 +40,22 @@ export default React.createClass({
     },
 
     render() {
-        let storeName = this.props.store.name;
-        let storeType = this.props.store.type;
-        let storeValue = this.props.store.value;
-        let storeStatus = this.props.store.status;
+        let {name,type,value,status}=this.props.store;
         return (
-            <li className={this.getClassName()} key={storeName}>
+            <li className={this.getClassName()} key={name}>
                 <div>
-                    {storeName + ' - '}
-                    <i>{storeType}</i>
-                    {storeStatus &&
+                    {name + ' - '}
+                    <i>{type}</i>
+                    {status &&
                         <div className='storeStatus' >
                             <span className='storeStatusIcon'><b>{this.getStoreStatusIcon()}</b></span>
-                            <span className='storeStatusDisplay'><b>{storeStatus}</b></span>
+                            <span className='storeStatusDisplay'><b>{status}</b></span>
                         </div>
                     }
                 </div>
                 <div style={{ cursor: 'pointer' }} className={this.getIconClassName()} onClick={this.handleCollapse} />
-                <div className='customDevTools-line-values'>
-                    <JSONTree data={storeValue} />
+                <div className='mdap-store-line-values'>
+                    <JSONTree data={value} />
                 </div>
             </li>
         )
