@@ -21,4 +21,4 @@ Un simple explorateur de stores focus (v2)
 ### Notes
 
 - Si vous souhaitez apportez des modifications, demandez moi de vous ajouter en tant que contributeur au projet.
-- Le bouton d'option (rouages) ne sert à rien pour l'instant, si vous des idées merci de contribuer ;)
+- Le bouton d'option (rouages) ne sert à rien pour l'instant, si vous avez des idées merci de contribuer ;)
