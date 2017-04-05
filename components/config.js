@@ -8,10 +8,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _lodash = require('lodash');
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
 var _input = require('focus-components/components/input');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -21,10 +17,10 @@ exports.default = _react2.default.createClass({
 
     getInitialState: function getInitialState() {
         return {
-            appStores: {
+            wip: {
                 value: false,
-                label: 'Show App Stores',
-                opt: 'appStores'
+                label: 'WIP',
+                opt: 'wip'
             }
         };
     },
@@ -53,9 +49,13 @@ exports.default = _react2.default.createClass({
     },
     render: function render() {
         return _react2.default.createElement(
-            'li',
-            null,
-            this.displayOptions()
+            'div',
+            { className: 'store-explorer-config' },
+            _react2.default.createElement(
+                'li',
+                null,
+                this.displayOptions()
+            )
         );
     }
 });
