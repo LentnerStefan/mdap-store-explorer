@@ -1,7 +1,5 @@
-import React, { Component, PropTypes } from 'react';
-import lodash from 'lodash';
+import React from 'react';
 import { Checkbox } from 'focus-components/components/input';
-
 
 
 export default React.createClass({
@@ -9,10 +7,10 @@ export default React.createClass({
 
     getInitialState() {
         return {
-            appStores: {
+            wip: {
                 value: false,
-                label: 'Show App Stores',
-                opt:'appStores'
+                label: 'WIP',
+                opt: 'wip'
             }
         }
     },
@@ -31,7 +29,7 @@ export default React.createClass({
         return _.map(this.state, (option) => {
             return (
                 <ul className='store-explorer-config-line'>
-                    <Checkbox value={option.value} onChange={()=>{this.handleFieldChange(option)}} />
+                    <Checkbox value={option.value} onChange={() => {this.handleFieldChange(option)}} />
                     {option.label}
                 </ul>
             )
@@ -39,9 +37,11 @@ export default React.createClass({
     },
     render() {
         return (
-            <li >
-                {this.displayOptions()}
-            </li>
+            <div className='store-explorer-config'>
+                <li >
+                    {this.displayOptions()}
+                </li>
+            </div>
         )
     }
 })

@@ -12,10 +12,6 @@ var _CoreStore = require('focus-core/store/CoreStore');
 
 var _CoreStore2 = _interopRequireDefault(_CoreStore);
 
-var _lodash = require('lodash');
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
 var _storeLine = require('./components/store-line');
 
 var _storeLine2 = _interopRequireDefault(_storeLine);
@@ -24,16 +20,17 @@ var _config = require('./components/config');
 
 var _config2 = _interopRequireDefault(_config);
 
+require('./styles/mdap-dev-tools.scss');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _react2.default.createClass({
-    displayName: 'customDevTools',
+    displayName: 'mdap-store-explorer',
 
     getInitialState: function getInitialState() {
         return {
             isExpanded: false,
             storeArray: [],
-            showContact: false,
             filterTextValue: '',
             searchBarExpanded: false,
             cssDisplay: 'none',
@@ -53,7 +50,6 @@ exports.default = _react2.default.createClass({
             return;
         }
         var charCode = e.keyCode || e.which;
-        var char = String.fromCharCode(charCode);
         if (charCode === 77 && e.ctrlKey) {
             this.toggleVisibility();
         }
@@ -63,38 +59,29 @@ exports.default = _react2.default.createClass({
             cssDisplay: this.state.cssDisplay === 'inline' ? 'none' : 'inline'
         });
     },
-    processAllStores: function processAllStores() {
-        var allStores = _CoreStore2.default.prototype._instances;
-        var metierStoreArray = [];
-        var otherArray = [];
-        for (var i = 0; i < allStores.length; i++) {
-            switch (Object.getPrototypeOf(allStores[i]).constructor.name) {
-                case 'CoreStore':
-                case 'ListStore':
-                    metierStoreArray.push(allStores[i]);
-                    break;
-                default:
-                    otherArray.push(allStores[i]);
-                    break;
-            }
-        }
-        this.processMetierStoreArray(metierStoreArray);
+    refresh: function refresh() {
+        //Récupère les stores de type coreStore & listStore
+        var stores = this.getStores();
+        // fait le getData/getDatalist/getCritiera, sur tous les stores
+        stores = this.getDataFromStores(stores);
+        // trie les stores alphabetiquement, et les filtre si nécessaire
+        this.sortAndFilterStores(stores);
     },
-    processMetierStoreArray: function processMetierStoreArray(metierStoreArray) {
+    getDataFromStores: function getDataFromStores(stores) {
         var storeArray = [];
-        for (var i = 0; i < metierStoreArray.length; i++) {
-            switch (Object.getPrototypeOf(metierStoreArray[i]).constructor.name) {
+        for (var i = 0; i < stores.length; i++) {
+            switch (Object.getPrototypeOf(stores[i]).constructor.name) {
                 case 'CoreStore':
-                    for (var property in metierStoreArray[i].definition) {
-                        if (metierStoreArray[i].definition.hasOwnProperty(property)) {
+                    for (var property in stores[i].definition) {
+                        if (stores[i].definition.hasOwnProperty(property)) {
                             var getMethodName = 'get' + property[0].toUpperCase() + property.slice(1);
-                            if (metierStoreArray[i][getMethodName]() !== undefined) {
+                            if (stores[i][getMethodName]() !== undefined) {
                                 var storeObject = {};
-                                storeObject.name = metierStoreArray[i].definition[property];
-                                storeObject.value = metierStoreArray[i][getMethodName]();
+                                storeObject.name = stores[i].definition[property];
+                                storeObject.value = stores[i][getMethodName]();
                                 storeObject.type = 'CoreStore';
-                                if (metierStoreArray[i].status.get(storeObject.name)) {
-                                    storeObject.status = metierStoreArray[i].status.get(storeObject.name).name;
+                                if (stores[i].status.get(storeObject.name)) {
+                                    storeObject.status = stores[i].status.get(storeObject.name).name;
                                 }
                                 storeArray.push(storeObject);
                             }
@@ -102,12 +89,12 @@ exports.default = _react2.default.createClass({
                     }
                     break;
                 case 'ListStore':
-                    if (metierStoreArray[i].getDataList() !== undefined) {
+                    if (stores[i].getDataList() !== undefined) {
                         var listStoreObject = {};
                         listStoreObject.value = {};
-                        listStoreObject.value.criteria = metierStoreArray[i].getCriteria();
-                        listStoreObject.value.data = metierStoreArray[i].getDataList();
-                        listStoreObject.name = metierStoreArray[i].config.identifier;
+                        listStoreObject.value.criteria = stores[i].getCriteria();
+                        listStoreObject.value.data = stores[i].getDataList();
+                        listStoreObject.name = stores[i].config.identifier;
                         listStoreObject.type = 'ListStore';
                         storeArray.push(listStoreObject);
                     }
@@ -116,26 +103,44 @@ exports.default = _react2.default.createClass({
                     break;
             }
         }
-        storeArray = _.sortBy(storeArray, function (o) {
+        return storeArray;
+    },
+    sortAndFilterStores: function sortAndFilterStores(stores) {
+        stores = _.sortBy(stores, function (o) {
             return o.name;
         });
         if (this.state.filterTextValue.length > 0) {
-            var filteredStoreArray = _.filter(storeArray, function (o) {
+            var filteredStoreArray = _.filter(stores, function (o) {
                 return o.name.toUpperCase().includes(x.target.value.toUpperCase());
             });
             this.setState({
-                storeArray: storeArray,
+                storeArray: stores,
                 filteredStoreArray: filteredStoreArray
             });
         } else {
             this.setState({
-                storeArray: storeArray,
-                filteredStoreArray: storeArray
+                storeArray: stores,
+                filteredStoreArray: stores
             });
         }
     },
+    getStores: function getStores() {
+        var allStores = _CoreStore2.default.prototype._instances;
+        var stores = [];
+        for (var i = 0; i < allStores.length; i++) {
+            switch (Object.getPrototypeOf(allStores[i]).constructor.name) {
+                case 'CoreStore':
+                case 'ListStore':
+                    stores.push(allStores[i]);
+                    break;
+                default:
+                    break;
+            }
+        }
+        return stores;
+    },
     getClassName: function getClassName() {
-        return this.state.isExpanded ? 'customDevTools-expanded' : 'customDevTools';
+        return this.state.isExpanded ? 'mdap-store-explorer-expanded' : 'mdap-store-explorer';
     },
     handleCollapse: function handleCollapse() {
         this.setState({
@@ -143,7 +148,7 @@ exports.default = _react2.default.createClass({
         });
     },
     getIconClassName: function getIconClassName() {
-        return this.state.isExpanded ? 'customDevTools-button-expand' : 'customDevTools-button-collapse';
+        return this.state.isExpanded ? 'mdap-store-button-expand' : 'mdap-store-button-collapse';
     },
     displayCoreStoreList: function displayCoreStoreList() {
         return _.map(this.state.filteredStoreArray, function (store) {
@@ -164,7 +169,7 @@ exports.default = _react2.default.createClass({
             this.setState({
                 searchBarExpanded: !this.state.searchBarExpanded,
                 filterTextValue: ''
-            }, this.processAllStores);
+            }, this.refresh);
         } else {
             this.setState({
                 searchBarExpanded: true
@@ -176,12 +181,16 @@ exports.default = _react2.default.createClass({
             displayOptions: !this.state.displayOptions
         });
     },
+    getConfig: function getConfig() {
+        // WIP, non utilisé pour l'instant.
+        return this.refs['mdap-config'].getOptionsValues();
+    },
     render: function render() {
         return _react2.default.createElement(
             'div',
             { className: this.getClassName(), style: { display: this.state.cssDisplay } },
             this.state.isExpanded && _react2.default.createElement('br', null),
-            this.state.isExpanded && _react2.default.createElement('div', { onClick: this.processAllStores, className: 'reloadDouble' }),
+            this.state.isExpanded && _react2.default.createElement('div', { onClick: this.refresh, className: 'reloadDouble' }),
             _react2.default.createElement(
                 'div',
                 { className: 'submit cursor-pointer mb20 button-minimize-container' },
@@ -203,7 +212,7 @@ exports.default = _react2.default.createClass({
                 _react2.default.createElement(
                     'b',
                     null,
-                    'CustomDevTools'
+                    'Mdap store explorer'
                 )
             ),
             this.state.searchBarExpanded && _react2.default.createElement(
@@ -215,8 +224,13 @@ exports.default = _react2.default.createClass({
             ),
             _react2.default.createElement(
                 'div',
-                { className: 'customDevToolsContent' },
-                this.state.displayOptions ? _react2.default.createElement(_config2.default, null) : this.displayCoreStoreList()
+                { className: 'mdap-store-explorer-content' },
+                _react2.default.createElement(
+                    'div',
+                    { style: { display: this.state.displayOptions === true ? 'inline' : 'none' } },
+                    _react2.default.createElement(_config2.default, { ref: 'mdap-config' })
+                ),
+                this.displayCoreStoreList()
             )
         );
     }

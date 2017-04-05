@@ -8,14 +8,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _CoreStore = require('focus-core/store/CoreStore');
-
-var _CoreStore2 = _interopRequireDefault(_CoreStore);
-
-var _lodash = require('lodash');
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
 var _reactJsonTree = require('react-json-tree');
 
 var _reactJsonTree2 = _interopRequireDefault(_reactJsonTree);
@@ -23,7 +15,7 @@ var _reactJsonTree2 = _interopRequireDefault(_reactJsonTree);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _react2.default.createClass({
-    displayName: 'customDevTools-store-line',
+    displayName: 'mdap-store-line',
 
     getInitialState: function getInitialState() {
         return {
@@ -36,10 +28,10 @@ exports.default = _react2.default.createClass({
         });
     },
     getClassName: function getClassName() {
-        return this.state.isExpanded ? 'customDevTools-line-expanded' : 'customDevTools-line-collapsed';
+        return this.state.isExpanded ? 'mdap-store-line-expanded' : 'mdap-store-line-collapsed';
     },
     getIconClassName: function getIconClassName() {
-        return this.state.isExpanded ? 'customDevTools-button-line-expanded' : 'customDevTools-button-line-collapsed';
+        return this.state.isExpanded ? 'mdap-store-button-line-expanded' : 'mdap-store-button-line-collapsed';
     },
     getStoreStatusIcon: function getStoreStatusIcon() {
         switch (this.props.store.status) {
@@ -56,23 +48,25 @@ exports.default = _react2.default.createClass({
         }
     },
     render: function render() {
-        var storeName = this.props.store.name;
-        var storeType = this.props.store.type;
-        var storeValue = this.props.store.value;
-        var storeStatus = this.props.store.status;
+        var _props$store = this.props.store,
+            name = _props$store.name,
+            type = _props$store.type,
+            value = _props$store.value,
+            status = _props$store.status;
+
         return _react2.default.createElement(
             'li',
-            { className: this.getClassName(), key: storeName },
+            { className: this.getClassName(), key: name },
             _react2.default.createElement(
                 'div',
                 null,
-                storeName + ' - ',
+                name + ' - ',
                 _react2.default.createElement(
                     'i',
                     null,
-                    storeType
+                    type
                 ),
-                storeStatus && _react2.default.createElement(
+                status && _react2.default.createElement(
                     'div',
                     { className: 'storeStatus' },
                     _react2.default.createElement(
@@ -90,7 +84,7 @@ exports.default = _react2.default.createClass({
                         _react2.default.createElement(
                             'b',
                             null,
-                            storeStatus
+                            status
                         )
                     )
                 )
@@ -98,8 +92,8 @@ exports.default = _react2.default.createClass({
             _react2.default.createElement('div', { style: { cursor: 'pointer' }, className: this.getIconClassName(), onClick: this.handleCollapse }),
             _react2.default.createElement(
                 'div',
-                { className: 'customDevTools-line-values' },
-                _react2.default.createElement(_reactJsonTree2.default, { data: storeValue })
+                { className: 'mdap-store-line-values' },
+                _react2.default.createElement(_reactJsonTree2.default, { data: value })
             )
         );
     }
