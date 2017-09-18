@@ -2,9 +2,9 @@ import React from 'react';
 import CoreStore from 'focus-core/store/CoreStore'
 import StoreLine from './components/store-line';
 import StoreConfig from './components/config';
+import _ from 'lodash';
 
 import './styles/mdap-dev-tools.scss';
-
 
 export default React.createClass({
     displayName: 'mdap-store-explorer',
