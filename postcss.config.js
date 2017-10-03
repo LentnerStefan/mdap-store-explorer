@@ -1,0 +1,1 @@
+module.exports = require('webpack-focus/postcss.config.js');
