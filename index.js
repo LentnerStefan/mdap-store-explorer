@@ -20,6 +20,10 @@ var _config = require('./components/config');
 
 var _config2 = _interopRequireDefault(_config);
 
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
 require('./styles/mdap-dev-tools.scss');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -106,11 +110,11 @@ exports.default = _react2.default.createClass({
         return storeArray;
     },
     sortAndFilterStores: function sortAndFilterStores(stores) {
-        stores = _.sortBy(stores, function (o) {
+        stores = _lodash2.default.sortBy(stores, function (o) {
             return o.name;
         });
         if (this.state.filterTextValue.length > 0) {
-            var filteredStoreArray = _.filter(stores, function (o) {
+            var filteredStoreArray = _lodash2.default.filter(stores, function (o) {
                 return o.name.toUpperCase().includes(x.target.value.toUpperCase());
             });
             this.setState({
@@ -151,12 +155,12 @@ exports.default = _react2.default.createClass({
         return this.state.isExpanded ? 'mdap-store-button-expand' : 'mdap-store-button-collapse';
     },
     displayCoreStoreList: function displayCoreStoreList() {
-        return _.map(this.state.filteredStoreArray, function (store) {
+        return _lodash2.default.map(this.state.filteredStoreArray, function (store) {
             return _react2.default.createElement(_storeLine2.default, { store: store });
         });
     },
     handleFilterChange: function handleFilterChange(x) {
-        var filteredStoreArray = _.filter(this.state.storeArray, function (o) {
+        var filteredStoreArray = _lodash2.default.filter(this.state.storeArray, function (o) {
             return o.name.toUpperCase().includes(x.target.value.toUpperCase());
         });
         this.setState({
