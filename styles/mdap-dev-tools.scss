@@ -185,6 +185,11 @@
     }
 }
 
+.container-window * {
+     box-sizing: border-box;
+     list-style: none;
+}
+
 
 @keyframes rotate {
     100% { transform: rotate(360deg); }
