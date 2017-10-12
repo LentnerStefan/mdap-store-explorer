@@ -4,6 +4,9 @@ import CoreStore from "focus-core/store/CoreStore";
 import StoreLine from "./store-line";
 import _ from "lodash";
 
+import CoreStoreHelper from '../helpers/core-store-helper';
+import ListStoreHelper from '../helpers/list-store-helper';
+
 export default React.createClass({
     displayName: "store-explorer",
 
@@ -21,79 +24,112 @@ export default React.createClass({
             storeArray: []
         };
     },
-    getDataFromStores() {},
+
+    componentWillReceiveProps(nextProps) {
+        if (
+            nextProps.isRecording === true &&
+            this.props.isRecording === false
+        ) {
+            this.addListeners();
+            // On commence l'enregistrement, on ajoute tout les listeners
+        } else if (
+            nextProps.isRecording === false &&
+            this.props.isRecording === true
+        ) {
+            // On fini l'enregistrement, on supprime tout les listeners
+            this.removeListeners();
+        }
+    },
+
+    addListeners() {
+        let newArray=this.state.storeArray
+        for (let i = 0; i < this.state.storeArray.length; i++) {
+            switch (this.state.storeArray[i].type) {
+                case "ListStore":
+                    ListStoreHelper.addListStoreListener.call(this,newArray[i]);
+                    break;
+                case "CoreStore":
+                    CoreStoreHelper.addCoreStoreListener.call(this,newArray[i]);
+                default:
+                    break;
+            }
+        }
+        this.setState({storeArray:newArray})        
+    },
+    removeListeners() {
+        let newArray=this.state.storeArray
+        for (let i = 0; i < this.state.storeArray.length; i++) {
+            switch (this.state.storeArray[i].type) {
+                case "ListStore":
+                    ListStoreHelper.removeListStoreListener.call(this,newArray[i]);
+                    break;
+                case "CoreStore":
+                    CoreStoreHelper.removeCoreStoreListener.call(this,newArray[i]);
+                default:
+                    break;
+            }
+        }
+        this.setState({storeArray:newArray})
+    },
+
     refresh() {
         let stores = CoreStore.prototype._instances;
-        let storeArray = [];
+        let storeArray = this.state.storeArray;
+        // On construit les objets d'affichage
         for (let i = 0; i < stores.length; i++) {
             switch (Object.getPrototypeOf(stores[i]).constructor.name) {
                 case "CoreStore":
-                    for (let property in stores[i].definition) {
-                        if (stores[i].definition.hasOwnProperty(property)) {
-                            let getMethodName =
-                                "get" +
-                                property[0].toUpperCase() +
-                                property.slice(1);
-                            if (stores[i][getMethodName]() !== undefined) {
-                                let storeObject = {};
-                                storeObject.name =
-                                    stores[i].definition[property];
-                                storeObject.value = stores[i][getMethodName]();
-                                storeObject.type = "CoreStore";
-                                if (stores[i].status.get(storeObject.name)) {
-                                    storeObject.status = stores[i].status.get(
-                                        storeObject.name
-                                    ).name;
-                                }
-                                storeArray.push(storeObject);
-                            }
+                    let newStoreArray=CoreStoreHelper.buildCoreStoreArray.call(this,stores[i])
+                    for (let i = 0; i < newStoreArray.length; i++) {
+                        if(_.findIndex(storeArray,(store)=>{
+                            return store.name===newStoreArray[i].name && store.definition===newStoreArray[i].definition
+                        })<0){
+                            storeArray.push(newStoreArray[i]);
                         }
-                    }
+                    }                        
                     break;
                 case "ListStore":
-                    if (stores[i].getDataList() !== undefined) {
-                        let listStoreObject = {};
-                        if (stores[i].getCriteria() !== undefined) {
-                            listStoreObject.value = {};
-
-                            listStoreObject.value.criteria = stores[
-                                i
-                            ].getCriteria();
-                            listStoreObject.value.data = stores[
-                                i
-                            ].getDataList();
-                        } else {
-                            listStoreObject.value = stores[i].getDataList();
+                    let newListStoreArray=ListStoreHelper.buildListStore.call(this,stores[i]);
+                    for (let i = 0; i < newListStoreArray.length; i++) {
+                        if(_.findIndex(storeArray,(store)=>{
+                            return store.name===newListStoreArray[i].name && store.definition===undefined && newListStoreArray[i].definition===undefined
+                        })<0){
+                            storeArray.push(newListStoreArray[i]);
                         }
-                        listStoreObject.name = stores[i].config.identifier;
-                        listStoreObject.type = "ListStore";
-                        storeArray.push(listStoreObject);
-                    }
+                    }   
                     break;
                 default:
                     break;
             }
         }
+        // On trie par nom
         storeArray = _.sortBy(storeArray, o => {
             return o.name;
         });
-        if (this.props.filterTextValue.length > 0) {
-            storeArray = _.filter(storeArray, o => {
-                return o.name
-                    .toUpperCase()
-                    .includes(this.props.filterTextValue.toUpperCase());
-            });
-        }
         this.setState({
             storeArray: storeArray
         });
     },
 
     render() {
+        let data=this.state.storeArray;
+        if (this.props.filterTextValue.length > 0) {
+            data = _.filter(data, o => {
+                return o.name
+                    .toUpperCase()
+                    .includes(this.props.filterTextValue.toUpperCase());
+            });
+        }
         return (
             <div>
-                {_.map(this.state.storeArray, store => {
-                    return <StoreLine store={store} />;
+                {_.map(data, store => {
+                    return (
+                        <StoreLine
+                            isRecording={store.isRecording}
+                            store={store}
+                            key={store.uniqId}
+                        />
+                    );
                 })}
             </div>
         );
