@@ -4,11 +4,10 @@ Un simple explorateur de stores focus (v2)
 
 ### Installation
 
-- Ajouter au devDependecies du package.json de votre projet la ligne suivante :
+- npm : 
 ```json
-"mdap-store-explorer": "git://github.com/LentnerStefan/mdap-store-explorer"
+npm i --save-dev mdap-store-explorer
 ```
-- Faire un npm install mdap-store-explorer
 
 - Ajouter l'import du composant au layout-initializer de votre projet, et le fournir en tant que DevTools ( !!! Avec la condition __DEV__ !!!)
 
@@ -17,7 +16,3 @@ Un simple explorateur de stores focus (v2)
 ### Utilisation
 
 - Pour faire apparaitre/disparaitre le composant, appuyer sur 'ctrl+m'
-
-### Notes
-
-- Si vous souhaitez apporter des modifications, demandez moi de vous ajouter en tant que contributeur au projet.
