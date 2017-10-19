@@ -24,6 +24,7 @@ exports.default = _react2.default.createClass({
         return {
             isExpanded: false,
             isDisplayed: false,
+            isRecording: false,
             filterTextValue: ""
         };
     },
@@ -43,13 +44,15 @@ exports.default = _react2.default.createClass({
         var charCode = e.keyCode || e.which;
         if (charCode === 77 && e.ctrlKey) {
             this.setState({
-                isDisplayed: !this.state.isDisplayed
+                isDisplayed: !this.state.isDisplayed,
+                isRecording: this.state.isDisplayed ? false : this.state.isRecording
             });
         }
     },
     handleCollapse: function handleCollapse() {
         this.setState({
-            isExpanded: !this.state.isExpanded
+            isExpanded: !this.state.isExpanded,
+            isRecording: false
         });
     },
     getContainerClassName: function getContainerClassName() {
@@ -57,6 +60,9 @@ exports.default = _react2.default.createClass({
     },
     refresh: function refresh() {
         this.refs && this.refs.storeExplorer && this.refs.storeExplorer.refresh();
+    },
+    getRecordIconClassName: function getRecordIconClassName() {
+        return this.state.isRecording ? "pulse-button recording" : "pulse-button";
     },
     render: function render() {
         var _this = this;
@@ -81,6 +87,13 @@ exports.default = _react2.default.createClass({
                 ),
                 _react2.default.createElement("div", { className: "refresh-icon", onClick: this.refresh }),
                 _react2.default.createElement(
+                    "div",
+                    { className: "pulse-container" },
+                    _react2.default.createElement("button", { className: this.getRecordIconClassName(), onClick: function onClick() {
+                            _this.setState({ isRecording: !_this.state.isRecording }, _this.refresh);
+                        } })
+                ),
+                _react2.default.createElement(
                     "form",
                     {
                         className: "search-input-container",
@@ -96,7 +109,7 @@ exports.default = _react2.default.createClass({
                         onChange: function onChange(e) {
                             _this.setState({
                                 filterTextValue: e.target.value
-                            }, _this.refresh);
+                            });
                         },
                         placeholder: "store...",
                         autoComplete: "off"
@@ -116,7 +129,8 @@ exports.default = _react2.default.createClass({
                 { className: "store-explorer" },
                 _react2.default.createElement(_storeExplorer2.default, {
                     ref: "storeExplorer",
-                    filterTextValue: this.state.filterTextValue
+                    filterTextValue: this.state.filterTextValue,
+                    isRecording: this.state.isRecording
                 })
             )
         );

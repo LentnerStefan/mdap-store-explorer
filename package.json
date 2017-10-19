@@ -1,6 +1,6 @@
 {
   "name": "mdap-store-explorer",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "A simple store explorer",
   "main": "index.js",
   "scripts": {

@@ -13,6 +13,7 @@ export default React.createClass({
         return {
             isExpanded: false,
             isDisplayed: false,
+            isRecording:false,
             filterTextValue: ""
         };
     },
@@ -42,14 +43,16 @@ export default React.createClass({
         const charCode = e.keyCode || e.which;
         if (charCode === 77 && e.ctrlKey) {
             this.setState({
-                isDisplayed: !this.state.isDisplayed
+                isDisplayed: !this.state.isDisplayed,
+                isRecording:this.state.isDisplayed?false:this.state.isRecording
             });
         }
     },
 
     handleCollapse() {
         this.setState({
-            isExpanded: !this.state.isExpanded
+            isExpanded: !this.state.isExpanded,
+            isRecording:false
         });
     },
 
@@ -61,6 +64,11 @@ export default React.createClass({
 
     refresh() {
         this.refs && this.refs.storeExplorer && this.refs.storeExplorer.refresh();
+    },
+    getRecordIconClassName(){
+        return this.state.isRecording           
+        ? "pulse-button recording"
+        : "pulse-button";
     },
 
     render() {
@@ -74,6 +82,9 @@ export default React.createClass({
                         <b>{"Store explorer"}</b>
                     </div>
                     <div className="refresh-icon" onClick={this.refresh} />
+                    <div className="pulse-container">
+                        <button className={this.getRecordIconClassName()} onClick={()=>{this.setState({isRecording:!this.state.isRecording},this.refresh)}}></button>
+                    </div>
                     <form
                         className="search-input-container"
                         onSubmit={e => {
@@ -88,7 +99,7 @@ export default React.createClass({
                             onChange={e => {
                                 this.setState({
                                     filterTextValue: e.target.value
-                                },this.refresh);
+                                });
                             }}
                             placeholder="store..."
                             autoComplete={"off"}
@@ -105,6 +116,7 @@ export default React.createClass({
                     <StoreExplorer
                         ref="storeExplorer"
                         filterTextValue={this.state.filterTextValue}
+                        isRecording={this.state.isRecording}
                     />
                 </div>
             </div>
