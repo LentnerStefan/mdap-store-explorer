@@ -81,20 +81,27 @@ export default React.createClass({
                 case "CoreStore":
                     let newStoreArray=CoreStoreHelper.buildCoreStoreArray.call(this,stores[i])
                     for (let i = 0; i < newStoreArray.length; i++) {
-                        if(_.findIndex(storeArray,(store)=>{
+                        let storeIndex=_.findIndex(storeArray,(store)=>{
                             return store.name===newStoreArray[i].name && store.definition===newStoreArray[i].definition
-                        })<0){
+                        });
+                        if(storeIndex<0){
                             storeArray.push(newStoreArray[i]);
+                        } else {
+                            storeArray[storeIndex].value=newStoreArray[i].value;
                         }
                     }                        
                     break;
                 case "ListStore":
                     let newListStoreArray=ListStoreHelper.buildListStore.call(this,stores[i]);
                     for (let i = 0; i < newListStoreArray.length; i++) {
-                        if(_.findIndex(storeArray,(store)=>{
+                        let storeIndex=_.findIndex(storeArray,(store)=>{
                             return store.name===newListStoreArray[i].name && store.definition===undefined && newListStoreArray[i].definition===undefined
-                        })<0){
+                        });
+                        if(storeIndex<0){
                             storeArray.push(newListStoreArray[i]);
+                        }
+                        else {
+                            storeArray[storeIndex].value=newListStoreArray[i].value;
                         }
                     }   
                     break;

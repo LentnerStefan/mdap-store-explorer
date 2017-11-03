@@ -99,10 +99,13 @@ exports.default = _react2.default.createClass({
                         var newStoreArray = _coreStoreHelper2.default.buildCoreStoreArray.call(_this, stores[i]);
 
                         var _loop = function _loop(_i) {
-                            if (_lodash2.default.findIndex(storeArray, function (store) {
+                            var storeIndex = _lodash2.default.findIndex(storeArray, function (store) {
                                 return store.name === newStoreArray[_i].name && store.definition === newStoreArray[_i].definition;
-                            }) < 0) {
+                            });
+                            if (storeIndex < 0) {
                                 storeArray.push(newStoreArray[_i]);
+                            } else {
+                                storeArray[storeIndex].value = newStoreArray[_i].value;
                             }
                         };
 
@@ -114,10 +117,13 @@ exports.default = _react2.default.createClass({
                         var newListStoreArray = _listStoreHelper2.default.buildListStore.call(_this, stores[i]);
 
                         var _loop2 = function _loop2(_i2) {
-                            if (_lodash2.default.findIndex(storeArray, function (store) {
+                            var storeIndex = _lodash2.default.findIndex(storeArray, function (store) {
                                 return store.name === newListStoreArray[_i2].name && store.definition === undefined && newListStoreArray[_i2].definition === undefined;
-                            }) < 0) {
+                            });
+                            if (storeIndex < 0) {
                                 storeArray.push(newListStoreArray[_i2]);
+                            } else {
+                                storeArray[storeIndex].value = newListStoreArray[_i2].value;
                             }
                         };
 

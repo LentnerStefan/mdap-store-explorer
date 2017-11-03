@@ -83,7 +83,15 @@ export default React.createClass({
                     </div>
                     <div className="refresh-icon" onClick={this.refresh} />
                     <div className="pulse-container">
-                        <button className={this.getRecordIconClassName()} onClick={()=>{this.setState({isRecording:!this.state.isRecording},this.refresh)}}></button>
+                        <button className={this.getRecordIconClassName()} onClick={()=>{
+                            if(this.state.isRecording===true){
+                                this.setState({isRecording:false})
+                            }
+                            else{
+                                this.refresh();
+                                this.setState({isRecording:true})
+                            }
+                        }}></button>
                     </div>
                     <form
                         className="search-input-container"
