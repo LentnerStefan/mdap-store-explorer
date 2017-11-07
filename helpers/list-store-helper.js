@@ -3,6 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _lodash = require("lodash");
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function buildListStore(ListStoreInstance) {
     var _this = this;
 
@@ -20,7 +27,7 @@ function buildListStore(ListStoreInstance) {
         listStoreObject.name = ListStoreInstance.config.identifier;
         listStoreObject.type = "ListStore";
         listStoreObject.instance = ListStoreInstance;
-        listStoreObject.uniqId = _.uniqueId();
+        listStoreObject.uniqId = _lodash2.default.uniqueId();
         listStoreObject.dataChangeMethod = function () {
             standardStoreChangeListener.call(_this, listStoreObject);
         };
@@ -35,7 +42,7 @@ function addListStoreListener(ListStore) {
 
 function standardStoreChangeListener(ListStore) {
     var currentState = this.state.storeArray;
-    var itemIndex = _.findIndex(currentState, function (o) {
+    var itemIndex = _lodash2.default.findIndex(currentState, function (o) {
         return o.name === ListStore.name;
     });
     var getMethodName = "getDataList";
