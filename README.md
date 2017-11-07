@@ -1,4 +1,4 @@
-# mdap-store-explorer
+# mdap-store-explorer   ![Travis](https://travis-ci.org/LentnerStefan/mdap-store-explorer.svg?branch=dev)
 Un simple explorateur de stores focus (v2)
 
 
