@@ -1,6 +1,12 @@
-# mdap-store-explorer   ![Travis](https://travis-ci.org/LentnerStefan/mdap-store-explorer.svg?branch=dev)
+# mdap-store-explorer   
 Un simple explorateur de stores focus (v2)
 
+
+[![NPM](https://nodei.co/npm/mdap-store-explorer.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/mdap-store-explorer/)
+
+**Master**: ![Travis](https://travis-ci.org/LentnerStefan/mdap-store-explorer.svg?branch=master)
+
+**Dev**: ![Travis](https://travis-ci.org/LentnerStefan/mdap-store-explorer.svg?branch=dev)
 
 ### Installation
 
