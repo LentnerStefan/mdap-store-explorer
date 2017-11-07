@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 function buildCoreStoreArray(CoreStoreInstance) {
     let storeArray = [];
     // On parcours toutes les définitions du coreStore. On crée une ligne pour chaque noeud.

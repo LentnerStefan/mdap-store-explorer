@@ -3,6 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _lodash = require("lodash");
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function buildCoreStoreArray(CoreStoreInstance) {
     var storeArray = [];
     // On parcours toutes les définitions du coreStore. On crée une ligne pour chaque noeud.
@@ -29,7 +36,7 @@ function buildCoreStore(CoreStoreInstance, definition) {
         storeObject.type = "CoreStore";
         storeObject.instance = CoreStoreInstance;
         storeObject.definition = definition;
-        storeObject.uniqId = _.uniqueId();
+        storeObject.uniqId = _lodash2.default.uniqueId();
         storeObject.dataChangeMethod = function () {
             standardStoreChangeListener.call(_this, storeObject);
         };
@@ -45,7 +52,7 @@ function addCoreStoreListener(CoreStore) {
 
 function standardStoreChangeListener(CoreStore) {
     var currentState = this.state.storeArray;
-    var itemIndex = _.findIndex(currentState, function (o) {
+    var itemIndex = _lodash2.default.findIndex(currentState, function (o) {
         return o.name === CoreStore.name && o.definition === CoreStore.definition;
     });
     var getMethodName = "get" + CoreStore.definition[0].toUpperCase() + CoreStore.definition.slice(1);

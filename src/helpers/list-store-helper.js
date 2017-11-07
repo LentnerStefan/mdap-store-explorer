@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 function buildListStore(ListStoreInstance) {
     let storeArray = [];
     if (ListStoreInstance.getDataList() !== undefined) {

@@ -90,7 +90,12 @@ exports.default = _react2.default.createClass({
                     "div",
                     { className: "pulse-container" },
                     _react2.default.createElement("button", { className: this.getRecordIconClassName(), onClick: function onClick() {
-                            _this.setState({ isRecording: !_this.state.isRecording }, _this.refresh);
+                            if (_this.state.isRecording === true) {
+                                _this.setState({ isRecording: false });
+                            } else {
+                                _this.refresh();
+                                _this.setState({ isRecording: true });
+                            }
                         } })
                 ),
                 _react2.default.createElement(
